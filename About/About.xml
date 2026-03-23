@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Ability Loadouts</name>
+  <author>Metalocif</author>
+  <packageId>metalocif.abilityloadouts</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modVersion>1.0</modVersion>
+  <description>Allows player-controlled pawns to swap between ability loadouts to hide gizmos, decluttering the UI.</description>
+  <modDependencies>
+	<li>
+		<packageId>brrainz.harmony</packageId>
+		<displayName>Harmony</displayName>
+		<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		<steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2009463077</steamWorkshopUrl>
+	</li>
+  </modDependencies>
+  <incompatibleWith>
+    <li>VanillaExpanded.VPsycastsE</li>
+  </incompatibleWith>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+</ModMetaData>

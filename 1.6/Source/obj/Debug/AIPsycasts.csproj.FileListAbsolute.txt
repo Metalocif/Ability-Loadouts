@@ -1,0 +1,12 @@
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Assemblies\VampAbilities.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Assemblies\VampAbilities.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Source\obj\Debug\AIPsycasts.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Source\obj\Debug\AIPsycasts.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Source\obj\Debug\VampAbilities.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\Source\obj\Debug\VampAbilities.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Source\obj\Debug\AIPsycasts.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Source\obj\Debug\AIPsycasts.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Assemblies\AIPsycasts.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Assemblies\AIPsycasts.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Source\obj\Debug\AIPsycasts.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AI Can Use Psycasts\1.6\Source\obj\Debug\AIPsycasts.pdb

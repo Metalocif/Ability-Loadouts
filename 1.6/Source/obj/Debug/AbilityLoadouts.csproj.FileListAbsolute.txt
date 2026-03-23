@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Source\obj\Debug\AbilityLoadouts.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Source\obj\Debug\AbilityLoadouts.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Assemblies\AbilityLoadouts.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Assemblies\AbilityLoadouts.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Source\obj\Debug\AbilityLoadouts.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Ability Loadouts\1.6\Source\obj\Debug\AbilityLoadouts.pdb

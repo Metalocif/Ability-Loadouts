@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "e//aAUlynUo=",
+  "success": true,
+  "projectFilePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Ability Loadouts\\1.6\\Source\\AbilityLoadouts.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alexa\\.nuget\\packages\\lib.harmony\\2.3.2\\lib.harmony.2.3.2.nupkg.sha512"
+  ],
+  "logs": []
+}
