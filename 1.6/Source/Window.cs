@@ -43,14 +43,13 @@ namespace AbilityLoadouts
 
         //handles dragselect
         private bool isDragging = false;
-        private bool dragTargetState = false; // Are we adding (true) or removing (false)?
-        private HashSet<Ability> abilitiesModifiedThisDrag = new HashSet<Ability>();
+        private bool dragTargetState = false; //whether we are toggling on or off
+        private HashSet<Ability> abilitiesModifiedThisDrag = new();
 
         //handles quickly moving to the renaming bar
         private bool focusRenameField = false;
-        private const string RenameFieldControlName = "LoadoutRenameField";
 
-        // Scroll states for our two panes
+        //scroll states
         private Vector2 leftScrollPos;
         private Vector2 rightScrollPos;
 
@@ -61,32 +60,30 @@ namespace AbilityLoadouts
         {
             this.comp = comp;
             this.doCloseX = true;
-            this.forcePause = true; // Pause the game while editing
+            this.forcePause = true;
             this.absorbInputAroundWindow = true;
             
-            // Auto-select the active loadout when opening
             if (comp.loadouts.Count > 0) selectedLoadout = comp.loadouts[comp.activeLoadoutIndex];
         }
         public override void PostClose()
         {
             base.PostClose();
+            //don't highlight new abilities again
             foreach (Ability ability in ((Pawn)comp.parent).abilities.abilities)
                 comp.seenAbilities.Add(ability);
         }
 
         public override void DoWindowContents(Rect inRect)
         {
-            // Header
+            //header
             Text.Font = GameFont.Medium;
             Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width, 35f), "Manage Loadouts: " + comp.parent.LabelShort);
             Text.Font = GameFont.Small;
 
-            // Define our two main panels
+            //panels
             Rect mainRect = new(inRect.x, inRect.y + 40f, inRect.width, inRect.height - 40f);
             Rect leftPane = mainRect.LeftHalf().ContractedBy(5f);
             Rect rightPane = mainRect.RightHalf().ContractedBy(5f);
-
-            // Draw backgrounds for visual separation
             Widgets.DrawMenuSection(leftPane);
             Widgets.DrawMenuSection(rightPane);
 
@@ -96,7 +93,7 @@ namespace AbilityLoadouts
 
         private void DrawLoadoutList(Rect rect)
         {
-            // "Add New Loadout" Button at the top
+            //add loadout button
             Rect addBtnRect = new(rect.x, rect.y, rect.width, 30f);
             if (Widgets.ButtonText(addBtnRect, "+ New Loadout"))
             {
@@ -107,7 +104,7 @@ namespace AbilityLoadouts
                 focusRenameField = true;
             }
 
-            // Scrollable list of loadouts
+            //list of loadouts on the left
             Rect outRect = new Rect(rect.x, rect.y + 35f, rect.width, rect.height - 35f);
             Rect viewRect = new Rect(0f, 0f, outRect.width - 16f, comp.loadouts.Count * 35f);
 
@@ -119,26 +116,24 @@ namespace AbilityLoadouts
                 Loadout loadout = comp.loadouts[i];
                 Rect rowRect = new Rect(0f, curY, viewRect.width, 30f);
 
-                // Highlight if selected
                 if (selectedLoadout == loadout)
                     Widgets.DrawHighlightSelected(rowRect);
                 else if (Mouse.IsOver(rowRect))
                     Widgets.DrawHighlight(rowRect);
 
-                // Delete button for this specific loadout
+                //delete button
                 Rect deleteRect = new Rect(rowRect.xMax - 30f, rowRect.y + 2f, 26f, 26f);
                 if (Widgets.ButtonImage(deleteRect, TexButton.Delete))
                 {
                     comp.loadouts.Remove(loadout);
                     if (selectedLoadout == loadout) selectedLoadout = null;
-                    // Adjust active index safely if needed here
-                    break; // Break to avoid collection modified exception during iteration
+                    break;
                 }
 
-                // Make the row clickable to select the loadout
+                //makes the row into a button
                 if (Widgets.ButtonInvisible(rowRect)) selectedLoadout = loadout;
 
-                // Label
+                //adds text on the row
                 Rect labelRect = new Rect(rowRect.x + 5f, rowRect.y, rowRect.width - 35f, rowRect.height);
                 Text.Anchor = TextAnchor.MiddleLeft;
                 Widgets.Label(labelRect, loadout.name + (comp.activeLoadoutIndex == i ? " (Active)" : ""));
@@ -161,9 +156,8 @@ namespace AbilityLoadouts
                 return;
             }
 
-            // Inline renaming for the selected loadout
-            GUI.SetNextControlName(RenameFieldControlName);
-
+            //jump to the loadout namer on creating a loadout
+            GUI.SetNextControlName("LoadoutRenameField");
             Rect renameRect = new Rect(rect.x, rect.y, rect.width, 30f);
 
             string textBefore = selectedLoadout.name;
@@ -171,7 +165,7 @@ namespace AbilityLoadouts
 
             if (focusRenameField)
             {
-                GUI.FocusControl(RenameFieldControlName);
+                GUI.FocusControl("LoadoutRenameField");
                 TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
                 if (editor != null)
                 {
@@ -179,33 +173,29 @@ namespace AbilityLoadouts
                     editor.SelectAll();
                 }
 
-                // Only stop trying once the control actually reports it HAS focus
-                if (GUI.GetNameOfFocusedControl() == RenameFieldControlName) focusRenameField = false;
+                //not sure how necessary this is
+                if (GUI.GetNameOfFocusedControl() == "LoadoutRenameField") focusRenameField = false;
             }
 
-            // "Set as Active" Button
+            //make active button - we can also do this from the float menu but redundancy is good
             Rect setActiveRect = new Rect(rect.x, rect.y + 35f, rect.width, 30f);
             if (Widgets.ButtonText(setActiveRect, "Set as Active Loadout"))
             {
                 comp.activeLoadoutIndex = comp.loadouts.IndexOf(selectedLoadout);
             }
 
-            
-
+            //filter box
             Rect filterRect = new Rect(rect.x, rect.y + 110f, rect.width, 24f);
 
-            // Draw the search label and text field
-            // "Search" label (optional, but helps clarity)
             Text.Font = GameFont.Tiny;
             GUI.color = Color.gray;
             Widgets.Label(new Rect(filterRect.x, filterRect.y - 15f, filterRect.width, 15f), "Filter by name:");
-            GUI.color = Color.white;
             Text.Font = GameFont.Small;
+            GUI.color = Color.white;
 
-            // The actual text box
             filterText = Widgets.TextField(new Rect(filterRect.x, filterRect.y, filterRect.width - 25f, filterRect.height), filterText);
 
-            // Add a clear button (X) if there is text
+            //button to clear filter
             if (!filterText.NullOrEmpty())
             {
                 if (Widgets.ButtonImage(new Rect(filterRect.xMax - 18f, filterRect.y + 3f, 18f, 18f), Widgets.CheckboxOffTex))
@@ -215,15 +205,14 @@ namespace AbilityLoadouts
                 }
             }
 
-            // Setup scrolling for the pawn's abilities
-            List<Ability> pawnAbilities = ((Pawn)comp.parent).abilities.abilities;
-            List<Ability> filteredAbilities = pawnAbilities
+            //filtered ability list
+            List<Ability> filteredAbilities = ((Pawn)comp.parent).abilities.abilities
             .Where(a => filterText.NullOrEmpty() || a.def.label.ToLower().Contains(filterText.ToLower()))
             .ToList();
 
             Rect bulkBtnRect = new Rect(rect.x, rect.y + 65f, rect.width, 30f);
 
-            // Split the 30px row into two buttons with a 5px gap
+            //select/clear buttons
             Rect leftBtn = bulkBtnRect.LeftPart(0.485f);
             Rect rightBtn = bulkBtnRect.RightPart(0.485f);
 
@@ -242,9 +231,9 @@ namespace AbilityLoadouts
             }
 
             Rect outRect = new Rect(rect.x, rect.y + 140f, rect.width, rect.height - 140f);
-            Rect viewRect = new Rect(0f, 0f, outRect.width - 16f, pawnAbilities.Count * 32f);
+            Rect viewRect = new Rect(0f, 0f, outRect.width - 16f, filteredAbilities.Count * 32f);
 
-            // Reset drag state if mouse is released anywhere
+            //reset dragselect
             if (Event.current.type == EventType.MouseUp)
             {
                 isDragging = false;
@@ -261,57 +250,51 @@ namespace AbilityLoadouts
                 bool currentlyIncluded = selectedLoadout.abilities.Contains(ability);
                 Rect rowRect = listing.GetRect(30f);
 
-                // --- DRAG CLICK LOGIC ---
+                //dragselect
                 if (Mouse.IsOver(rowRect))
                 {
                     Widgets.DrawHighlight(rowRect);
 
-                    // Start of a drag
+                    //start dragselect
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                     {
                         isDragging = true;
-                        dragTargetState = !currentlyIncluded; // If we clicked an ON ability, we are now "Removing"
+                        dragTargetState = !currentlyIncluded; //whether to toggle on or off
                         abilitiesModifiedThisDrag.Clear();
                     }
 
-                    // Processing the drag
+                    //do dragselect
                     if (isDragging && !abilitiesModifiedThisDrag.Contains(ability))
                     {
-                        if (dragTargetState) // Adding
+                        if (dragTargetState)
                         {
                             if (!currentlyIncluded) selectedLoadout.abilities.Add(ability);
                         }
-                        else // Removing
+                        else
                         {
                             if (currentlyIncluded) selectedLoadout.abilities.Remove(ability);
                         }
-
                         abilitiesModifiedThisDrag.Add(ability);
                         SoundDefOf.Click.PlayOneShotOnCamera();
                     }
                 }
 
-                // --- VISUAL ELEMENTS (Manual Drawing) ---
-                // Checkbox (Visual only)
+                //ability checkbox (the entire row is a button, checkbox not a button)
                 float chkSize = 24f;
                 Rect chkRect = new Rect(rowRect.x, rowRect.y + (rowRect.height - chkSize) / 2f, chkSize, chkSize);
-                // Note: We use 'currentlyIncluded' updated by the drag logic above
                 bool drawState = selectedLoadout.abilities.Contains(ability);
                 Widgets.Checkbox(chkRect.position, ref drawState, chkSize);
 
-                // Icon
+                //ability icon
                 Rect iconRect = new Rect(chkRect.xMax + 4f, rowRect.y + 1f, 28f, 28f);
                 Widgets.DrawTextureFitted(iconRect, def.uiIcon, 1f);
                 GUI.color = Color.white;
 
-                // Label
+                //ability name
                 Rect labelRect = new Rect(iconRect.xMax + 6f, rowRect.y + 3, rowRect.width - (iconRect.xMax + 11f), rowRect.height);
                 Text.Anchor = TextAnchor.MiddleLeft;
-                if (!comp.seenAbilities.Contains(ability))
-                {
-                    //Rect borderRect = labelRect.ExpandedBy(1f);
-                    Widgets.DrawBoxSolidWithOutline(labelRect, Color.clear, Color.yellow, 1);
-                }
+                if (comp.seenAbilities.Any() && !comp.seenAbilities.Contains(ability)) Widgets.DrawHighlightSelected(rowRect);
+
                 Widgets.Label(labelRect, def.LabelCap);
                 Text.Anchor = TextAnchor.UpperLeft;
 

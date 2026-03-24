@@ -23,13 +23,16 @@ namespace AbilityLoadouts
         {
             Pawn pawn = __instance.pawn;
             CompAbilityLoadout loadoutsComp = pawn.TryGetComp<CompAbilityLoadout>();
+            bool multiSelect = Find.Selector.SelectedObjects.Count > 1;
 
-            if (pawn.abilities.abilities.Count > 1)
+            if (pawn.abilities.abilities.Count > 1 && loadoutsComp != null)
             {
                 yield return new Command_LoadoutManager
                 {
-                    comp = loadoutsComp, // Pass the comp so the gizmo can read the loadouts
-                    defaultLabel = "Loadouts",
+                    comp = loadoutsComp, //pass the comp so the gizmo can read the loadouts
+                    //groupKey = pawn.thingIDNumber,  //on multiselect, show one gizmo per pawn?
+                    //we don't actually want that because annoying in combat
+                    defaultLabel = multiSelect ? "Loadouts (" + pawn.LabelShort + ")" : "Loadouts",
                     defaultDesc = "Left-click: Open Editor\nRight-click: Quick Swap",
                     icon = ContentFinder<Texture2D>.Get("UI/Buttons/Config"),
                     action = () => Find.WindowStack.Add(new Window_ManageLoadouts(loadoutsComp))
