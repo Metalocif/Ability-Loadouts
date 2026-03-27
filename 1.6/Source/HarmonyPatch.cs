@@ -42,7 +42,7 @@ namespace AbilityLoadouts
 
             if (pawn.equipment != null)
                 foreach (ThingWithComps equipment in pawn.equipment.AllEquipmentListForReading)
-                    foreach (Gizmo gearGizmo in equipment.TryGetComp<CompEquippableAbility>().AbilityForReading.GetGizmos())
+                    foreach (Gizmo gearGizmo in (equipment.TryGetComp<CompEquippableAbility>()?.AbilityForReading?.GetGizmos() ?? Enumerable.Empty<Gizmo>()))
                         yield return gearGizmo;
 
             if (loadoutsComp == null || loadoutsComp.activeLoadoutIndex < 0 || loadoutsComp.activeLoadoutIndex >= loadoutsComp.loadouts.Count)
