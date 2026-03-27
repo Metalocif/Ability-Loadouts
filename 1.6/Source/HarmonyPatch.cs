@@ -25,7 +25,8 @@ namespace AbilityLoadouts
             CompAbilityLoadout loadoutsComp = pawn.TryGetComp<CompAbilityLoadout>();
             bool multiSelect = Find.Selector.SelectedObjects.Count > 1;
 
-            if (pawn.abilities.abilities.Count > 1 && loadoutsComp != null)
+            if ((pawn.IsColonistPlayerControlled || pawn.IsColonyMechPlayerControlled || pawn.IsColonySubhumanPlayerControlled || pawn.IsColonyAnimal)
+                && pawn.abilities.abilities.Count > 1 && loadoutsComp != null)
             {
                 yield return new Command_LoadoutManager
                 {
@@ -38,6 +39,11 @@ namespace AbilityLoadouts
                     action = () => Find.WindowStack.Add(new Window_ManageLoadouts(loadoutsComp))
                 };
             }
+
+            if (pawn.equipment != null)
+                foreach (ThingWithComps equipment in pawn.equipment.AllEquipmentListForReading)
+                    foreach (Gizmo gearGizmo in equipment.TryGetComp<CompEquippableAbility>().AbilityForReading.GetGizmos())
+                        yield return gearGizmo;
 
             if (loadoutsComp == null || loadoutsComp.activeLoadoutIndex < 0 || loadoutsComp.activeLoadoutIndex >= loadoutsComp.loadouts.Count)
             {
